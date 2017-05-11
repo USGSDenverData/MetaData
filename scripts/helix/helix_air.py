@@ -25,14 +25,15 @@ def main():
     sleep(15)
     close('6')
 
+    sleep(2)
     if analysis_type=='blank':
         info('Blank. Not filling pipette')
     else:
         info('Filling pipette')
         open('7')
-        sleep(15)
-        close('7')
 
+    sleep(15)
+    close('7')
     #expand pipette
     close('5')
     close('3')
