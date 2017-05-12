@@ -49,12 +49,12 @@ def main():
 # POST EQUILIBRATION SCRIPT helix_pump_prep.py
 #===============================================================================
 def main():
-	close('6')
-	close('4')
-	sleep(2)
-	open('3')
-	open('11')
-	open('5')
+    close('6')
+    close('4')
+    sleep(2)
+    open('3')
+    open('11')
+    open('5')
 
 #===============================================================================
 # POST MEASUREMENT SCRIPT helix_pump_ms.py
