@@ -33,7 +33,7 @@ def main():
         info('Filling pipette')
         open('7')
 
-    sleep(15)
+    sleep(30)
     close('7')
     #expand pipette
     close('5')
@@ -42,6 +42,9 @@ def main():
     sleep(2)
     open('4')
     open('6')
+
+    #cleanup
+    sleep(30)
 
     #gas staged behind inlet
 
@@ -60,4 +63,4 @@ def main():
 # POST MEASUREMENT SCRIPT helix_pump_ms.py
 #===============================================================================
 def main():
-	open('1')
+    open('1')
