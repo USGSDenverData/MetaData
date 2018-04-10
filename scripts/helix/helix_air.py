@@ -37,13 +37,21 @@ def main():
     close('7')
     #expand pipette
     close('5')
-    close('3')
+    close('4')
 
     sleep(2)
-    open('4')
     open('6')
 
-    #cleanup
+    #firststagecleanup
+    info('first stage cleanup')
+    sleep(30)
+
+    close('3')
+    sleep(2)
+    open('4')
+    
+    #secondstagecleanup
+    info('second stage cleanup')
     sleep(30)
 
     #gas staged behind inlet
@@ -53,12 +61,14 @@ def main():
 #===============================================================================
 def main():
     close('6')
+    open('4')
+    sleep(2)
+    open('11')
+    open('5')
+    sleep(10)
     close('4')
     sleep(2)
     open('3')
-    open('11')
-    open('5')
-
 #===============================================================================
 # POST MEASUREMENT SCRIPT helix_pump_ms.py
 #===============================================================================
