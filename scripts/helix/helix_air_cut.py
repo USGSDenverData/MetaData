@@ -49,6 +49,7 @@ def main():
     #cut gas
     close('6')
     close('11')
+    sleep(2)
     open('4')
     open('5')
     sleep(2)
