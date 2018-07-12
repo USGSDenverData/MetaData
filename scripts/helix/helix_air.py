@@ -1,77 +1,59 @@
-#===============================================================================
-# EXTRACTION SCRIPT helix_air.py
-#===============================================================================
 '''
-modifier: 1
-eqtime: 10
+baseline:
+  after: true
+  before: false
+  counts: 120
+  detector: H2
+  mass: 39.59
+  settling_time: 0.0
+default_fits: nominal
+equilibration:
+  eqtime: 45.0
+  inlet: '2'
+  inlet_delay: 3
+  outlet: '1'
+  use_extraction_eqtime: false
+multicollect:
+  counts: 400
+  detector: H2
+  isotope: Ar40
+peakcenter:
+  after: true
+  before: false
+  detector: H2
+  detectors:
+    - L2(CDD)
+    - AX
+  integration_time: 0.065536
+  isotope: Ar40
+peakhop:
+  generate_ic_table: false
+  hops_name: hop
+  ncycles: 0
+  use_peak_hop: false
 '''
+
+DETECTORS=['H2','H1','AX', 'L1', 'L2(CDD)']
 
 def main():
-    info('Air pipette')
+    activate_detectors(*DETECTORS)
 
-    open('3')
-    close('2')
-    open('1')
-
-    # close of chambers
-    close('8')
-    close('9')
-
-    close('7')
-
-    #pump out pipette
-    open('5')
-    open('11')
-    open('6')
-    sleep(15)
-    close('6')
-
-    sleep(2)
-    if analysis_type=='blank':
-        info('Blank. Not filling pipette')
+    position_magnet(mx.multicollect.isotope, detector=mx.multicollect.detector)
+    if mx.equilibration.use_extraction_eqtime:
+        eq = ex.eqtime
     else:
-        info('Filling pipette')
-        open('7')
+        eq = mx.equilibration.eqtime
 
-    sleep(30)
-    close('7')
-    #expand pipette
-    close('5')
-    close('4')
+    equilibrate(eqtime=eq, inlet=mx.equilibration.inlet, outlet=mx.equilibration.outlet)
+    set_time_zero()
+    sniff(eq)
 
-    sleep(2)
-    open('6')
+    set_fits()
+    set_baseline_fits()
 
-    #firststagecleanup
-    info('first stage cleanup')
-    sleep(30)
-
-    close('3')
-    sleep(2)
-    open('4')
-    
-    #secondstagecleanup
-    info('second stage cleanup')
-    sleep(30)
-
-   
-    #gas staged behind inlet
-
-#===============================================================================
-# POST EQUILIBRATION SCRIPT helix_pump_prep.py
-#===============================================================================
-def main():
-    close('6')
-    open('4')
-    sleep(2)
-    open('11')
-    open('5')
-    sleep(10)
-    close('4')
-    sleep(2)
-    open('3')
-#===============================================================================
-# POST MEASUREMENT SCRIPT helix_pump_ms.py
-#===============================================================================
-def main():
-    open('1')
+    multicollect(ncounts=mx.multicollect.counts)
+    if mx.baseline.after:
+        baselines(ncounts=mx.baseline.counts, mass=mx.baseline.mass, detector=mx.baseline.detector)
+    if mx.peakcenter.after:
+        activate_detectors(*mx.peakcenter.detectors, **{'peak_center':True})
+        peak_center(detector=mx.peakcenter.detector, isotope=mx.peakcenter.isotope)
